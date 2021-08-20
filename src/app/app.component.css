@@ -1,0 +1,23 @@
+#fullArea {
+  background-color: gray;
+  /* width: 95vw; */
+  height: 95vh;
+  margin: auto;
+}
+
+#map {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#tile-picker {
+  width: 384px;
+  height: 512px;
+  background: black;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 4px;
+}
