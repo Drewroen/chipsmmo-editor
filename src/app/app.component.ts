@@ -19,7 +19,5 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.gameMap = new GameMap();
     document.getElementById('map').appendChild(this.gameMap.gameMapGraphic.view);
-
-    document.getElementById('tile-picker').appendChild(this.gameMap.tileSelector.tileSelectorGraphic.view)
   }
 }

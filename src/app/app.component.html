@@ -2,5 +2,13 @@
   <div id="map" [ngStyle]="{'height': gameMap.height * 32 + 'px', 'width': gameMap.width * 32 + 'px' }">
   </div>
   <div id="tile-picker" cdkDrag cdkDragBoundary="#fullArea">
+    <button class="tile-picker-button" id="tile-picker-terrain" (click)="gameMap.tileSelector.goToTerrainSection()">Terrain</button>
+    <button class="tile-picker-button" id="tile-picker-items" (click)="gameMap.tileSelector.goToItemSection()">Items</button>
+    <button class="tile-picker-button" id="tile-picker-mobs" (click)="gameMap.tileSelector.goToMobSection()">Mobs</button>
+    <button class="tile-picker-button" id="tile-picker-spawning" (click)="gameMap.tileSelector.goToSpawnSection()">Spawning</button>
+    <button class="tile-picker-button" id="tile-picker-settings" (click)="gameMap.tileSelector.goToSettingsSection()">Settings</button>
+    <div id="tile-picker-section">
+      Spot1
+    </div>
   </div>
 </div>
