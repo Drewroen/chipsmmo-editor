@@ -7,8 +7,6 @@ export class GameMap {
 
   private terrain: any[][];
   private terrainInformation: number[][];
-  private items: any[][];
-  private itemInformation: number[][];
   private mobs: any[][];
   private mobInformation: number[][];
   private spawnings: any[][];
@@ -36,8 +34,6 @@ export class GameMap {
 
     this.terrain = [];
     this.terrainInformation = [];
-    this.items = [];
-    this.itemInformation = [];
     this.mobs = [];
     this.mobInformation = [];
     this.spawnings = [];
@@ -47,8 +43,6 @@ export class GameMap {
     {
       this.terrain[i] = [];
       this.terrainInformation[i] = [];
-      this.items[i] = [];
-      this.itemInformation[i] = [];
       this.mobs[i] = [];
       this.mobInformation[i] = [];
       this.spawnings[i] = []
@@ -56,25 +50,20 @@ export class GameMap {
       for(var j = 0; j < this.width; j++)
       {
         this.terrainInformation[i][j] = 0;
-        this.itemInformation[i][j] = 0;
         this.mobInformation[i][j] = 0;
         this.spawningInformation[i][j] = 0;
 
         this.terrain[i][j] = new PIXI.Sprite();
-        this.items[i][j] = new PIXI.Sprite();
         this.mobs[i][j] = new PIXI.Sprite();
         this.spawnings[i][j] = new PIXI.Sprite();
         this.spawnings[i][j].alpha = 0.3;
 
         this.terrain[i][j].texture = this.generateTileTexture(0);
-        this.items[i][j].texture = null;
         this.mobs[i][j].texture = null;
         this.spawnings[i][j].texture = null;
 
         this.terrain[i][j].x = 32 * i;
         this.terrain[i][j].y = 32 * j;
-        this.items[i][j].x = 32 * i;
-        this.items[i][j].y = 32 * j;
         this.mobs[i][j].x = 32 * i;
         this.mobs[i][j].y = 32 * j;
         this.spawnings[i][j].x = 32 * i;
@@ -109,7 +98,6 @@ export class GameMap {
         });
 
         this.gameMapGraphic.stage.addChild(this.terrain[i][j]);
-        this.gameMapGraphic.stage.addChild(this.items[i][j]);
         this.gameMapGraphic.stage.addChild(this.mobs[i][j]);
         this.gameMapGraphic.stage.addChild(this.spawnings[i][j]);
       }
@@ -138,11 +126,7 @@ export class GameMap {
           this.mobs[x][y].texture = this.generateTileTexture(tileValue);
           this.mobInformation[x][y] = tileValue;
         }
-        else if (tileValue < 180)
-        {
-          this.items[x][y].texture = this.generateTileTexture(tileValue);
-          this.itemInformation[x][y] = tileValue;
-        } else
+        else
         {
           this.spawnings[x][y].texture = this.generateTileTexture(tileValue);
           this.spawningInformation[x][y] = tileValue;
@@ -159,7 +143,6 @@ export class GameMap {
     try {
       this.terrain[x][y].texture = this.generateTileTexture(0);
       this.mobs[x][y].texture = null;
-      this.items[x][y].texture = null;
       this.spawnings[x][y].texture = null;
     } catch {
       this.leftClickDown = false;
@@ -183,7 +166,6 @@ export class GameMap {
       for(var i = 0; i < this.terrain.length; i++)
       {
         this.gameMapGraphic.stage.removeChild(this.terrain[i][this.terrain[0].length - 1]);
-        this.gameMapGraphic.stage.removeChild(this.items[i][this.items[0].length - 1]);
         this.gameMapGraphic.stage.removeChild(this.mobs[i][this.mobs[0].length - 1]);
         this.gameMapGraphic.stage.removeChild(this.spawnings[i][this.spawnings[0].length - 1]);
       }
@@ -191,12 +173,10 @@ export class GameMap {
       for(var i = 0; i < this.terrainInformation.length; i++)
       {
         this.terrainInformation[i].pop();
-        this.itemInformation[i].pop();
         this.mobInformation[i].pop();
         this.spawningInformation[i].pop();
 
         this.terrain[i].pop();
-        this.items[i].pop();
         this.mobs[i].pop();
         this.spawnings[i].pop();
       }
@@ -214,30 +194,24 @@ export class GameMap {
       for(var i = 0; i < this.terrain.length; i++)
       {
         this.terrainInformation[i][j] = 0;
-        this.itemInformation[i][j] = 0;
         this.mobInformation[i][j] = 0;
         this.spawningInformation[i][j] = 0;
 
         this.terrainInformation[i][j] = 0;
-        this.itemInformation[i][j] = 0;
         this.mobInformation[i][j] = 0;
         this.spawningInformation[i][j] = 0;
 
         this.terrain[i][j] = new PIXI.Sprite();
-        this.items[i][j] = new PIXI.Sprite();
         this.mobs[i][j] = new PIXI.Sprite();
         this.spawnings[i][j] = new PIXI.Sprite();
         this.spawnings[i][j].alpha = 0.3;
 
         this.terrain[i][j].texture = this.generateTileTexture(0);
-        this.items[i][j].texture = null;
         this.mobs[i][j].texture = null;
         this.spawnings[i][j].texture = null;
 
         this.terrain[i][j].x = 32 * i;
         this.terrain[i][j].y = 32 * j;
-        this.items[i][j].x = 32 * i;
-        this.items[i][j].y = 32 * j;
         this.mobs[i][j].x = 32 * i;
         this.mobs[i][j].y = 32 * j;
         this.spawnings[i][j].x = 32 * i;
@@ -272,7 +246,6 @@ export class GameMap {
         });
 
         this.gameMapGraphic.stage.addChild(this.terrain[i][j]);
-        this.gameMapGraphic.stage.addChild(this.items[i][j]);
         this.gameMapGraphic.stage.addChild(this.mobs[i][j]);
         this.gameMapGraphic.stage.addChild(this.spawnings[i][j]);
 
@@ -291,18 +264,15 @@ export class GameMap {
       for(var i = 0; i < this.terrain[0].length; i++)
       {
         this.gameMapGraphic.stage.removeChild(this.terrain[this.terrain.length - 1][i]);
-        this.gameMapGraphic.stage.removeChild(this.items[this.items.length - 1][i]);
         this.gameMapGraphic.stage.removeChild(this.mobs[this.mobs.length - 1][i]);
         this.gameMapGraphic.stage.removeChild(this.spawnings[this.spawnings.length - 1][i]);
       }
 
       this.terrainInformation.pop();
-      this.itemInformation.pop();
       this.mobInformation.pop();
       this.spawningInformation.pop();
 
       this.terrain.pop();
-      this.items.pop();
       this.mobs.pop();
       this.spawnings.pop();
     }
@@ -318,42 +288,34 @@ export class GameMap {
       var i = this.terrain.length;
 
       this.terrainInformation.push([]);
-      this.itemInformation.push([]);
       this.mobInformation.push([]);
       this.spawningInformation.push([]);
 
       this.terrain.push([]);
-      this.items.push([]);
       this.mobs.push([]);
       this.spawnings.push([]);
 
       for(var j = 0; j < this.terrain[0].length; j++)
       {
         this.terrainInformation[i][j] = 0;
-        this.itemInformation[i][j] = 0;
         this.mobInformation[i][j] = 0;
         this.spawningInformation[i][j] = 0;
 
         this.terrainInformation[i][j] = 0;
-        this.itemInformation[i][j] = 0;
         this.mobInformation[i][j] = 0;
         this.spawningInformation[i][j] = 0;
 
         this.terrain[i][j] = new PIXI.Sprite();
-        this.items[i][j] = new PIXI.Sprite();
         this.mobs[i][j] = new PIXI.Sprite();
         this.spawnings[i][j] = new PIXI.Sprite();
         this.spawnings[i][j].alpha = 0.3;
 
         this.terrain[i][j].texture = this.generateTileTexture(0);
-        this.items[i][j].texture = null;
         this.mobs[i][j].texture = null;
         this.spawnings[i][j].texture = null;
 
         this.terrain[i][j].x = 32 * i;
         this.terrain[i][j].y = 32 * j;
-        this.items[i][j].x = 32 * i;
-        this.items[i][j].y = 32 * j;
         this.mobs[i][j].x = 32 * i;
         this.mobs[i][j].y = 32 * j;
         this.spawnings[i][j].x = 32 * i;
@@ -388,7 +350,6 @@ export class GameMap {
         });
 
         this.gameMapGraphic.stage.addChild(this.terrain[i][j]);
-        this.gameMapGraphic.stage.addChild(this.items[i][j]);
         this.gameMapGraphic.stage.addChild(this.mobs[i][j]);
         this.gameMapGraphic.stage.addChild(this.spawnings[i][j]);
 

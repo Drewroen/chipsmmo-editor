@@ -43,3 +43,17 @@
 .mat-icon {
   vertical-align: middle;
 }
+
+.settings-box-singular-title {
+  display: inline-block;
+  width: 20%;
+}
+
+.settings-box-singular-title-2 {
+  display: inline-block;
+  width: 50%;
+}
+
+.settings-box-singular-value {
+  display: inline-block;
+}

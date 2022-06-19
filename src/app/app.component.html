@@ -3,15 +3,84 @@
   </div>
   <div id="tile-picker" cdkDrag cdkDragBoundary="#fullArea">
     <button class="tile-picker-button" id="tile-picker-terrain" (click)="gameMap.tileSelector.goToTerrainSection()">Terrain</button>
-    <button class="tile-picker-button" id="tile-picker-items" (click)="gameMap.tileSelector.goToItemSection()">Items</button>
     <button class="tile-picker-button" id="tile-picker-mobs" (click)="gameMap.tileSelector.goToMobSection()">Mobs</button>
     <button class="tile-picker-button" id="tile-picker-spawning" (click)="gameMap.tileSelector.goToSpawnSection()">Spawning</button>
     <button class="tile-picker-button" id="tile-picker-settings" (click)="gameMap.tileSelector.goToSettingsSection()">Settings</button>
     <div id="tile-picker-section">
       <div *ngIf="gameMap.tileSelector.state == TileSelectorState.Settings">
         <div class="settings-box">
-          <strong>Height:</strong><mat-icon (click)="gameMap.decrementHeight()">arrow_left</mat-icon> {{gameMap.height}} <mat-icon (click)="gameMap.incrementHeight()">arrow_right</mat-icon>
-          <strong>Width:</strong><mat-icon (click)="gameMap.decrementWidth()">arrow_left</mat-icon> {{gameMap.width}} <mat-icon (click)="gameMap.incrementWidth()">arrow_right</mat-icon>
+          <div class="settings-box-singular">
+            <div class="settings-box-singular-title">
+              <strong>Height</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <mat-icon (click)="gameMap.decrementHeight()">arrow_left</mat-icon> {{gameMap.height}} <mat-icon (click)="gameMap.incrementHeight()">arrow_right</mat-icon>
+            </div>
+          </div>
+          <div class="settings-box-singular">
+            <div class="settings-box-singular-title">
+              <strong>Width</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <mat-icon (click)="gameMap.decrementWidth()">arrow_left</mat-icon> {{gameMap.width}} <mat-icon (click)="gameMap.incrementWidth()">arrow_right</mat-icon>
+            </div>
+          </div>
+          <div class="settings-box-singular cdk-drag-disabled">
+            <div class="settings-box-singular-title-2">
+              <strong>Red Key Frequency</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <input matInput type="number" step="1" [(ngModel)]="mapSettings.redKey">
+            </div>
+          </div>
+          <div class="settings-box-singular cdk-drag-disabled">
+            <div class="settings-box-singular-title-2">
+              <strong>Yellow Key Frequency</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <input matInput type="number" step="1" [(ngModel)]="mapSettings.yellowKey">
+            </div>
+          </div>
+          <div class="settings-box-singular cdk-drag-disabled">
+            <div class="settings-box-singular-title-2">
+              <strong>Green Key Frequency</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <input matInput type="number" step="1" [(ngModel)]="mapSettings.greenKey">
+            </div>
+          </div>
+          <div class="settings-box-singular cdk-drag-disabled">
+            <div class="settings-box-singular-title-2">
+              <strong>Blue Key Frequency</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <input matInput type="number" step="1" [(ngModel)]="mapSettings.blueKey">
+            </div>
+          </div>
+          <div class="settings-box-singular cdk-drag-disabled">
+            <div class="settings-box-singular-title-2">
+              <strong>Bomb Frequency</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <input matInput type="number" step="1" [(ngModel)]="mapSettings.bomb">
+            </div>
+          </div>
+          <div class="settings-box-singular cdk-drag-disabled">
+            <div class="settings-box-singular-title-2">
+              <strong>Chip Frequency</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <input matInput type="number" step="1" [(ngModel)]="mapSettings.chip">
+            </div>
+          </div>
+          <div class="settings-box-singular cdk-drag-disabled">
+            <div class="settings-box-singular-title-2">
+              <strong>Golden Chip Frequency</strong>
+            </div>
+            <div class="settings-box-singular-value">
+              <input matInput type="number" step="1" [(ngModel)]="mapSettings.goldenChip">
+            </div>
+          </div>
         </div>
       </div>
     </div>

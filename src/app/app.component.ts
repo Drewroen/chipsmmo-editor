@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { GameMap } from 'src/objects/gameMap';
+import { MapSettings } from '../objects/mapSettings';
 import { TileSelectorState } from '../objects/tileSelector';
 
 @Component({
@@ -14,10 +15,11 @@ export class AppComponent implements OnInit {
     event.preventDefault();
   }
   public gameMap: GameMap;
-  title = 'chipsmmo-map-editor';
+  public mapSettings: MapSettings;
 
   async ngOnInit() {
     this.gameMap = new GameMap();
+    this.mapSettings = new MapSettings();
     document.getElementById('map').appendChild(this.gameMap.gameMapGraphic.view);
   }
 }

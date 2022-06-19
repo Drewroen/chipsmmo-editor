@@ -6,12 +6,10 @@ export enum TileSelectorState {
 
 export class TileSelector {
   public terrainSelector: TileSelectorGraphic;
-  public itemSelector: TileSelectorGraphic;
   public mobSelector: TileSelectorGraphic;
   public spawnSelector: TileSelectorGraphic;
 
   private TERRAIN_START_X = 0;
-  private ITEMS_START_X = 12;
   private MOBS_START_X = 7;
   private SPAWNINGS_START_X = 15;
 
@@ -22,10 +20,6 @@ export class TileSelector {
     [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0]
-  ];
-
-  public existingItems = [
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
 
   public existingMobs = [
@@ -46,12 +40,10 @@ export class TileSelector {
 
   constructor() {
     this.terrainSelector = new TileSelectorGraphic(this.existingTerrain, this.TERRAIN_START_X);
-    this.itemSelector = new TileSelectorGraphic(this.existingItems, this.ITEMS_START_X);
     this.mobSelector = new TileSelectorGraphic(this.existingMobs, this.MOBS_START_X);
     this.spawnSelector = new TileSelectorGraphic(this.existingSpawnings, this.SPAWNINGS_START_X);
 
     this.addMouseListenersToTileSelectorGraphic(this.terrainSelector);
-    this.addMouseListenersToTileSelectorGraphic(this.itemSelector);
     this.addMouseListenersToTileSelectorGraphic(this.mobSelector);
     this.addMouseListenersToTileSelectorGraphic(this.spawnSelector);
 
@@ -103,13 +95,6 @@ export class TileSelector {
     this.addToTilePickerSection(this.mobSelector.tileSelectorGraphic.view);
   };
 
-  public goToItemSection = () => {
-    this.resetAllGraphics();
-    this.resetAllSelections();
-    this.state = TileSelectorState.Items;
-    this.addToTilePickerSection(this.itemSelector.tileSelectorGraphic.view);
-  };
-
   public goToSpawnSection = () => {
     this.resetAllGraphics();
     this.resetAllSelections();
@@ -124,20 +109,18 @@ export class TileSelector {
   };
 
   private setSelectedTile(): void {
-    this.selectedValue = Math.max(this.terrainSelector.getSelectedTileValue(), this.itemSelector.getSelectedTileValue(), this.mobSelector.getSelectedTileValue(), this.spawnSelector.getSelectedTileValue());
+    this.selectedValue = Math.max(this.terrainSelector.getSelectedTileValue(), this.mobSelector.getSelectedTileValue(), this.spawnSelector.getSelectedTileValue());
   }
 
 
   private resetAllGraphics(): void {
     this.terrainSelector.tileSelectorGraphic.view.remove();
-    this.itemSelector.tileSelectorGraphic.view.remove();
     this.mobSelector.tileSelectorGraphic.view.remove();
     this.spawnSelector.tileSelectorGraphic.view.remove();
   }
 
   private resetAllSelections(): void {
     this.terrainSelector.resetSelections();
-    this.itemSelector.resetSelections();
     this.mobSelector.resetSelections();
     this.spawnSelector.resetSelections();
   }
