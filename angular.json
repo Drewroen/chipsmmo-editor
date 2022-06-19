@@ -27,7 +27,6 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/pixi.js/dist/pixi.min.js"
             ]
           },
           "configurations": {
@@ -122,5 +121,8 @@
       }
     }
   },
-  "defaultProject": "chipsmmo-map-editor"
+  "defaultProject": "chipsmmo-map-editor",
+  "cli": {
+    "analytics": false
+  }
 }

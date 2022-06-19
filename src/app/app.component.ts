@@ -1,7 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { GameMap } from 'src/objects/gameMap';
-
-export declare var PIXI: any;
+import { TileSelectorState } from '../objects/tileSelector';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +8,7 @@ export declare var PIXI: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  public TileSelectorState = TileSelectorState;
   @HostListener('contextmenu', ['$event'])
   onRightClick(event) {
     event.preventDefault();

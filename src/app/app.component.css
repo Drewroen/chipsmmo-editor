@@ -34,3 +34,12 @@
 .tile-picker-button:hover {
   background: #347F01;
 }
+
+.settings-box {
+  width: 100%;
+  background: white;
+}
+
+.mat-icon {
+  vertical-align: middle;
+}

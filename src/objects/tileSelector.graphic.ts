@@ -1,4 +1,4 @@
-export declare var PIXI: any;
+import * as PIXI from 'pixi.js';
 
 export class TileSelectorGraphic {
   public tiles: any[][];
@@ -16,8 +16,11 @@ export class TileSelectorGraphic {
     this.tilemapYOffset = tilemapYOffset;
     this.existingItemsMap = existingItemsMap;
     this.tileSelectorGraphic = new PIXI.Application(
-      this.existingItemsMap[0].length * 32, this.existingItemsMap.length * 32,
-      { transparent: true }
+      {
+        transparent: true,
+        width: this.existingItemsMap[0].length * 32,
+        height: this.existingItemsMap.length * 32
+      }
     );
 
     this.tiles = [];
@@ -46,7 +49,7 @@ export class TileSelectorGraphic {
 
   private generateTileTexture(x: number)
   {
-    let base = new PIXI.Texture.from('./../assets/TILESELECTION.png');
+    let base = PIXI.Texture.from('./../assets/TILESELECTION.png');
     let texture = new PIXI.Texture(base.baseTexture, new PIXI.Rectangle(32 * (x % this.NUMBER_OF_COLUMNS_IN_TILESET), 32 * ((x - (x % this.NUMBER_OF_COLUMNS_IN_TILESET)) / this.NUMBER_OF_COLUMNS_IN_TILESET), 32, 32));
     return texture;
   }

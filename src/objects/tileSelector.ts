@@ -1,9 +1,10 @@
 import { TileSelectorGraphic } from './tileSelector.graphic';
 
-export declare var PIXI: any;
+export enum TileSelectorState {
+  Terrain, Items, Mobs, Spawning, Settings
+};
 
 export class TileSelector {
-
   public terrainSelector: TileSelectorGraphic;
   public itemSelector: TileSelectorGraphic;
   public mobSelector: TileSelectorGraphic;
@@ -40,6 +41,8 @@ export class TileSelector {
 
   private mouseDownCoordinates: number[];
   public selectedValue = -1;
+
+  public state: TileSelectorState;
 
   constructor() {
     this.terrainSelector = new TileSelectorGraphic(this.existingTerrain, this.TERRAIN_START_X);
@@ -86,11 +89,39 @@ export class TileSelector {
     }
   }
 
-  public goToTerrainSection = () => { this.resetAllGraphics(); this.resetAllSelections(); this.addToTilePickerSection(this.terrainSelector.tileSelectorGraphic.view); };
-  public goToMobSection = () => { this.resetAllGraphics(); this.resetAllSelections(); this.addToTilePickerSection(this.mobSelector.tileSelectorGraphic.view); };
-  public goToItemSection = () => { this.resetAllGraphics(); this.resetAllSelections(); this.addToTilePickerSection(this.itemSelector.tileSelectorGraphic.view); };
-  public goToSpawnSection = () => { this.resetAllGraphics(); this.resetAllSelections(); this.addToTilePickerSection(this.spawnSelector.tileSelectorGraphic.view); };
-  public goToSettingsSection = () => { this.resetAllGraphics(); this.resetAllSelections(); };
+  public goToTerrainSection = () => {
+    this.resetAllGraphics();
+    this.resetAllSelections();
+    this.state = TileSelectorState.Terrain;
+    this.addToTilePickerSection(this.terrainSelector.tileSelectorGraphic.view);
+  };
+
+  public goToMobSection = () => {
+    this.resetAllGraphics();
+    this.resetAllSelections();
+    this.state = TileSelectorState.Mobs;
+    this.addToTilePickerSection(this.mobSelector.tileSelectorGraphic.view);
+  };
+
+  public goToItemSection = () => {
+    this.resetAllGraphics();
+    this.resetAllSelections();
+    this.state = TileSelectorState.Items;
+    this.addToTilePickerSection(this.itemSelector.tileSelectorGraphic.view);
+  };
+
+  public goToSpawnSection = () => {
+    this.resetAllGraphics();
+    this.resetAllSelections();
+    this.state = TileSelectorState.Spawning;
+    this.addToTilePickerSection(this.spawnSelector.tileSelectorGraphic.view);
+  };
+
+  public goToSettingsSection = () => {
+    this.resetAllGraphics();
+    this.resetAllSelections();
+    this.state = TileSelectorState.Settings;
+  };
 
   private setSelectedTile(): void {
     this.selectedValue = Math.max(this.terrainSelector.getSelectedTileValue(), this.itemSelector.getSelectedTileValue(), this.mobSelector.getSelectedTileValue(), this.spawnSelector.getSelectedTileValue());
