@@ -2,10 +2,11 @@
   <div id="map" [ngStyle]="{'height': gameMap.height * 32 + 'px', 'width': gameMap.width * 32 + 'px' }">
   </div>
   <div id="tile-picker" cdkDrag cdkDragBoundary="#fullArea">
-    <button class="tile-picker-button" id="tile-picker-terrain" (click)="gameMap.tileSelector.goToTerrainSection()">Terrain</button>
-    <button class="tile-picker-button" id="tile-picker-mobs" (click)="gameMap.tileSelector.goToMobSection()">Mobs</button>
-    <button class="tile-picker-button" id="tile-picker-spawning" (click)="gameMap.tileSelector.goToSpawnSection()">Spawning</button>
-    <button class="tile-picker-button" id="tile-picker-settings" (click)="gameMap.tileSelector.goToSettingsSection()">Settings</button>
+    <button class="btn btn-info" id="tile-picker-terrain" (click)="gameMap.tileSelector.goToTerrainSection()">Terrain</button>
+    <button class="btn btn-info" id="tile-picker-mobs" (click)="gameMap.tileSelector.goToMobSection()">Mobs</button>
+    <button class="btn btn-info" id="tile-picker-spawning" (click)="gameMap.tileSelector.goToSpawnSection()">Spawning</button>
+    <button class="btn btn-info" id="tile-picker-settings" (click)="gameMap.tileSelector.goToSettingsSection()">Settings</button>
+    <button class="btn btn-info" id="tile-picker-import-export" (click)="gameMap.tileSelector.goToImportExportSection()">Import/Export</button>
     <div id="tile-picker-section">
       <div *ngIf="gameMap.tileSelector.state == TileSelectorState.Settings">
         <div class="settings-box">
@@ -25,63 +26,24 @@
               <mat-icon (click)="gameMap.decrementWidth()">arrow_left</mat-icon> {{gameMap.width}} <mat-icon (click)="gameMap.incrementWidth()">arrow_right</mat-icon>
             </div>
           </div>
-          <div class="settings-box-singular cdk-drag-disabled">
+          <div *ngFor="let mapSetting of gameMap.mapSettings" class="settings-box-singular">
             <div class="settings-box-singular-title-2">
-              <strong>Red Key Frequency</strong>
+              <strong>{{mapSetting.name}} Frequency</strong>
             </div>
             <div class="settings-box-singular-value">
-              <input matInput type="number" step="1" [(ngModel)]="mapSettings.redKey">
-            </div>
-          </div>
-          <div class="settings-box-singular cdk-drag-disabled">
-            <div class="settings-box-singular-title-2">
-              <strong>Yellow Key Frequency</strong>
-            </div>
-            <div class="settings-box-singular-value">
-              <input matInput type="number" step="1" [(ngModel)]="mapSettings.yellowKey">
-            </div>
-          </div>
-          <div class="settings-box-singular cdk-drag-disabled">
-            <div class="settings-box-singular-title-2">
-              <strong>Green Key Frequency</strong>
-            </div>
-            <div class="settings-box-singular-value">
-              <input matInput type="number" step="1" [(ngModel)]="mapSettings.greenKey">
-            </div>
-          </div>
-          <div class="settings-box-singular cdk-drag-disabled">
-            <div class="settings-box-singular-title-2">
-              <strong>Blue Key Frequency</strong>
-            </div>
-            <div class="settings-box-singular-value">
-              <input matInput type="number" step="1" [(ngModel)]="mapSettings.blueKey">
-            </div>
-          </div>
-          <div class="settings-box-singular cdk-drag-disabled">
-            <div class="settings-box-singular-title-2">
-              <strong>Bomb Frequency</strong>
-            </div>
-            <div class="settings-box-singular-value">
-              <input matInput type="number" step="1" [(ngModel)]="mapSettings.bomb">
-            </div>
-          </div>
-          <div class="settings-box-singular cdk-drag-disabled">
-            <div class="settings-box-singular-title-2">
-              <strong>Chip Frequency</strong>
-            </div>
-            <div class="settings-box-singular-value">
-              <input matInput type="number" step="1" [(ngModel)]="mapSettings.chip">
-            </div>
-          </div>
-          <div class="settings-box-singular cdk-drag-disabled">
-            <div class="settings-box-singular-title-2">
-              <strong>Golden Chip Frequency</strong>
-            </div>
-            <div class="settings-box-singular-value">
-              <input matInput type="number" step="1" [(ngModel)]="mapSettings.goldenChip">
+              <input matInput type="number" step="1" [(ngModel)]="mapSetting.value">
             </div>
           </div>
         </div>
+      </div>
+      <div *ngIf="gameMap.tileSelector.state == TileSelectorState.ImportExport">
+        <label class="btn btn-success">
+          Import
+          <input type="file" style="display: none;"  name="image" (change)="uploadLevel($event)">
+        </label>
+        <button type="button" (click)="downloadLevel()" class="btn btn-success">
+          Export
+        </button>
       </div>
     </div>
   </div>

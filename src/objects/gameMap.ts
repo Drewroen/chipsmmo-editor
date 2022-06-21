@@ -1,6 +1,8 @@
 import { TileSelector } from './tileSelector';
 import * as PIXI from 'pixi.js';
 import { ThisReceiver } from '@angular/compiler';
+import { MapSetting } from './mapSetting';
+import { MapExport } from './mapExport';
 
 export class GameMap {
   public tileSelector: TileSelector;
@@ -15,13 +17,36 @@ export class GameMap {
   private leftClickDown = false;
   private rightClickDown = false;
 
-  public height = 24;
-  public width = 24;
+  public height: number;
+  public width: number;
 
-  public gameMapGraphic: any;
+  public gameMapGraphic: PIXI.Application;
 
-  constructor()
+  public mapSettings: Array<MapSetting>;
+
+  constructor(width: number, height: number)
   {
+    this.width = width;
+    this.height = height;
+
+    this.mapSettings = [
+      new MapSetting("Red Key", 10),
+      new MapSetting("Yellow Key", 10),
+      new MapSetting("Blue Key", 10),
+      new MapSetting("Green Key", 4),
+      new MapSetting("Flippers", 4),
+      new MapSetting("Fire Boots", 4),
+      new MapSetting("Ice Skates", 4),
+      new MapSetting("Force Boots", 4),
+      new MapSetting("Bomb", 20),
+      new MapSetting("Chip", 50),
+      new MapSetting("Bowling Ball", 10),
+      new MapSetting("Whistle", 15),
+      new MapSetting("Toggle Chip", 20),
+      new MapSetting("Golden Chip", 4),
+      new MapSetting("Treasure Chest", 1),
+    ];
+
     this.tileSelector = new TileSelector();
 
     this.gameMapGraphic = new PIXI.Application(
@@ -39,7 +64,7 @@ export class GameMap {
     this.spawnings = [];
     this.spawningInformation = [];
 
-    for(var i = 0; i < this.height; i++)
+    for(var i = 0; i < this.width; i++)
     {
       this.terrain[i] = [];
       this.terrainInformation[i] = [];
@@ -47,7 +72,7 @@ export class GameMap {
       this.mobInformation[i] = [];
       this.spawnings[i] = []
       this.spawningInformation[i] = [];
-      for(var j = 0; j < this.width; j++)
+      for(var j = 0; j < this.height; j++)
       {
         this.terrainInformation[i][j] = 0;
         this.mobInformation[i][j] = 0;
@@ -61,6 +86,99 @@ export class GameMap {
         this.terrain[i][j].texture = this.generateTileTexture(0);
         this.mobs[i][j].texture = null;
         this.spawnings[i][j].texture = null;
+
+        this.terrain[i][j].x = 32 * i;
+        this.terrain[i][j].y = 32 * j;
+        this.mobs[i][j].x = 32 * i;
+        this.mobs[i][j].y = 32 * j;
+        this.spawnings[i][j].x = 32 * i;
+        this.spawnings[i][j].y = 32 * j;
+
+        this.terrain[i][j].interactive = true;
+        this.terrain[i][j].on('mousedown', () => {
+          this.leftClickDown = true;
+        });
+
+        this.terrain[i][j].on('rightdown', () => {
+          this.rightClickDown = true;
+        })
+
+        this.terrain[i][j].on('mousemove', (event) => {
+          if(this.leftClickDown)
+            this.updateTile(Math.floor(event.data.global.x / 32), Math.floor(event.data.global.y / 32), this.tileSelector.selectedValue);
+          else if(this.rightClickDown)
+            this.resetTile(Math.floor(event.data.global.x / 32), Math.floor(event.data.global.y / 32));
+        });
+
+        this.terrain[i][j].on('mouseup', (event) => {
+          if(this.leftClickDown)
+            this.updateTile(Math.floor(event.data.global.x / 32), Math.floor(event.data.global.y / 32), this.tileSelector.selectedValue);
+          this.leftClickDown = false;
+        });
+
+        this.terrain[i][j].on('rightup', (event) => {
+          if(this.rightClickDown)
+            this.resetTile(Math.floor(event.data.global.x / 32), Math.floor(event.data.global.y / 32));
+          this.rightClickDown = false;
+        });
+
+        this.gameMapGraphic.stage.addChild(this.terrain[i][j]);
+        this.gameMapGraphic.stage.addChild(this.mobs[i][j]);
+        this.gameMapGraphic.stage.addChild(this.spawnings[i][j]);
+      }
+    }
+  }
+
+  public regenerateMap(mapSettings: Array<MapSetting>, importedTerrain: any[][], importedMobs: any[][], importedSpawnings: any[][])
+  {
+    this.width = importedTerrain.length;
+    this.height = importedTerrain[0].length;
+
+    for (var i = this.gameMapGraphic.stage.children.length - 1; i >= 0; i--) {
+      this.gameMapGraphic.stage.removeChild(this.gameMapGraphic.stage.children[i]);
+    };
+
+    this.resize();
+
+    this.mapSettings = mapSettings;
+
+    var requiredSettings = ["Red Key", "Yellow Key", "Blue Key", "Green Key", "Flippers", "Fire Boots", "Ice Skates", "Force Boots", "Bomb", "Chip", "Bowling Ball", "Whistle", "Toggle Chip", "Golden Chip", "Treasure Chest"];
+
+    for(var setting of requiredSettings)
+    {
+      if (this.getMapSettingByName(setting) == null)
+        this.mapSettings.push(new MapSetting(setting, 0));
+    }
+
+    this.terrain = [];
+    this.terrainInformation = [];
+    this.mobs = [];
+    this.mobInformation = [];
+    this.spawnings = [];
+    this.spawningInformation = [];
+
+    for(var i = 0; i < this.width; i++)
+    {
+      this.terrain[i] = [];
+      this.terrainInformation[i] = [];
+      this.mobs[i] = [];
+      this.mobInformation[i] = [];
+      this.spawnings[i] = []
+      this.spawningInformation[i] = [];
+      for(var j = 0; j < this.height; j++)
+      {
+        this.terrainInformation[i][j] = importedTerrain[i][j];
+        this.mobInformation[i][j] = 0;
+        this.spawningInformation[i][j] = 0;
+
+        this.terrain[i][j] = new PIXI.Sprite();
+        this.mobs[i][j] = new PIXI.Sprite();
+        this.spawnings[i][j] = new PIXI.Sprite();
+        this.spawnings[i][j].alpha = 0.3;
+
+        this.terrain[i][j].texture = this.generateTileTexture(importedTerrain[i][j]);
+        this.mobs[i][j].texture = importedMobs[i][j] != 0 ? this.generateTileTexture(importedMobs[i][j]) : null;
+        this.spawnings[i][j].texture = importedSpawnings[i][j] != 0 ? this.generateTileTexture(importedSpawnings[i][j]) : null;
 
         this.terrain[i][j].x = 32 * i;
         this.terrain[i][j].y = 32 * j;
@@ -142,8 +260,11 @@ export class GameMap {
   {
     try {
       this.terrain[x][y].texture = this.generateTileTexture(0);
+      this.terrainInformation[x][y] = 0;
       this.mobs[x][y].texture = null;
+      this.mobInformation[x][y] = 0;
       this.spawnings[x][y].texture = null;
+      this.spawningInformation[x][y] = 0;
     } catch {
       this.leftClickDown = false;
       this.rightClickDown = false;
@@ -356,5 +477,20 @@ export class GameMap {
         this.resetTile(i, j);
       }
     }
+  }
+
+  public generateExportFile(): MapExport
+  {
+    return new MapExport(this.terrainInformation, this.mobInformation, this.spawningInformation, this.mapSettings);
+  }
+
+  public getMapSettingByName(name: string)
+  {
+    for(var i = 0; i < this.mapSettings.length; i++)
+    {
+      if (this.mapSettings[i].name == name)
+        return this.mapSettings[i];
+    }
+    return null;
   }
 }

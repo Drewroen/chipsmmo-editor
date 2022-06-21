@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { GameMap } from 'src/objects/gameMap';
-import { MapSettings } from '../objects/mapSettings';
+import { MapExport } from '../objects/mapExport';
+import { MapSetting } from '../objects/mapSetting';
 import { TileSelectorState } from '../objects/tileSelector';
 
 @Component({
@@ -15,11 +16,28 @@ export class AppComponent implements OnInit {
     event.preventDefault();
   }
   public gameMap: GameMap;
-  public mapSettings: MapSettings;
 
   async ngOnInit() {
-    this.gameMap = new GameMap();
-    this.mapSettings = new MapSettings();
+    this.gameMap = new GameMap(24, 24);
     document.getElementById('map').appendChild(this.gameMap.gameMapGraphic.view);
+  }
+
+  public downloadLevel()
+  {
+    let a = document.createElement("a");
+    a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(JSON.stringify(this.gameMap.generateExportFile())));
+    a.setAttribute('download', "ChipsMMO-Level");
+    a.click();
+  }
+
+  public uploadLevel(event)
+  {
+    var file = event.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+      var map = JSON.parse(fileReader.result as string) as MapExport;
+      this.gameMap.regenerateMap(map.settings, map.terrain, map.mobs, map.spawns);
+    }
+    fileReader.readAsText(file);
   }
 }

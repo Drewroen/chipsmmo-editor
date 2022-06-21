@@ -1,7 +1,7 @@
 import { TileSelectorGraphic } from './tileSelector.graphic';
 
 export enum TileSelectorState {
-  Terrain, Items, Mobs, Spawning, Settings
+  Terrain, Mobs, Spawning, Settings, ImportExport
 };
 
 export class TileSelector {
@@ -107,6 +107,12 @@ export class TileSelector {
     this.resetAllSelections();
     this.state = TileSelectorState.Settings;
   };
+
+  public goToImportExportSection = () => {
+    this.resetAllGraphics();
+    this.resetAllSelections();
+    this.state = TileSelectorState.ImportExport;
+  }
 
   private setSelectedTile(): void {
     this.selectedValue = Math.max(this.terrainSelector.getSelectedTileValue(), this.mobSelector.getSelectedTileValue(), this.spawnSelector.getSelectedTileValue());
