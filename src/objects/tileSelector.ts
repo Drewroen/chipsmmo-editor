@@ -1,3 +1,4 @@
+import { MouseService } from '../services/mouseService';
 import { TileSelectorGraphic } from './tileSelector.graphic';
 
 export enum TileSelectorState {
@@ -5,43 +6,29 @@ export enum TileSelectorState {
 };
 
 export class TileSelector {
+  public mouseService: MouseService;
+
   public terrainSelector: TileSelectorGraphic;
   public mobSelector: TileSelectorGraphic;
   public spawnSelector: TileSelectorGraphic;
 
-  private TERRAIN_START_X = 0;
-  private MOBS_START_X = 7;
-  private SPAWNINGS_START_X = 15;
+  public existingTerrainCount = 50;
 
-  public existingTerrain = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0]
-  ];
+  public existingMobCount = 40;
 
-  public existingMobs = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-  ];
-
-  public existingSpawnings = [
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  ]
+  public existingSpawnings = 2;
 
   private mouseDownCoordinates: number[];
   public selectedValue = -1;
 
   public state: TileSelectorState;
 
-  constructor() {
-    this.terrainSelector = new TileSelectorGraphic(this.existingTerrain, this.TERRAIN_START_X);
-    this.mobSelector = new TileSelectorGraphic(this.existingMobs, this.MOBS_START_X);
-    this.spawnSelector = new TileSelectorGraphic(this.existingSpawnings, this.SPAWNINGS_START_X);
+  constructor(mouseService: MouseService) {
+    this.mouseService = mouseService;
+
+    this.terrainSelector = new TileSelectorGraphic(this.existingTerrainCount, "TERRAIN");
+    this.mobSelector = new TileSelectorGraphic(this.existingMobCount, "MOB");
+    this.spawnSelector = new TileSelectorGraphic(this.existingSpawnings, "SPAWN");
 
     this.addMouseListenersToTileSelectorGraphic(this.terrainSelector);
     this.addMouseListenersToTileSelectorGraphic(this.mobSelector);

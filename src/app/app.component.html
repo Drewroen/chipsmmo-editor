@@ -2,11 +2,13 @@
   <div id="map" [ngStyle]="{'height': gameMap.height * 32 + 'px', 'width': gameMap.width * 32 + 'px' }">
   </div>
   <div id="tile-picker" cdkDrag cdkDragBoundary="#fullArea">
-    <button class="btn btn-info" id="tile-picker-terrain" (click)="gameMap.tileSelector.goToTerrainSection()">Terrain</button>
-    <button class="btn btn-info" id="tile-picker-mobs" (click)="gameMap.tileSelector.goToMobSection()">Mobs</button>
-    <button class="btn btn-info" id="tile-picker-spawning" (click)="gameMap.tileSelector.goToSpawnSection()">Spawning</button>
-    <button class="btn btn-info" id="tile-picker-settings" (click)="gameMap.tileSelector.goToSettingsSection()">Settings</button>
-    <button class="btn btn-info" id="tile-picker-import-export" (click)="gameMap.tileSelector.goToImportExportSection()">Import/Export</button>
+    <div class="tile-picker-tabs">
+      <app-tab [iconName]="'terrain'" [iconAlt]="'Terrain'" (click)="gameMap.tileSelector.goToTerrainSection()"></app-tab>
+      <app-tab [iconName]="'mobs'" [iconAlt]="'Mobs'" (click)="gameMap.tileSelector.goToMobSection()"></app-tab>
+      <app-tab [iconName]="'spawning'" [iconAlt]="'Spawning'" (click)="gameMap.tileSelector.goToSpawnSection()"></app-tab>
+      <app-tab [iconName]="'settings'" [iconAlt]="'Settings'" (click)="gameMap.tileSelector.goToSettingsSection()"></app-tab>
+      <app-tab [iconName]="'save'" [iconAlt]="'Save/Open'" (click)="gameMap.tileSelector.goToImportExportSection()"></app-tab>
+    </div>
     <div id="tile-picker-section">
       <div *ngIf="gameMap.tileSelector.state == TileSelectorState.Settings">
         <div class="settings-box">

@@ -93,6 +93,8 @@
             "scripts": []
           }
         },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {

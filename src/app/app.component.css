@@ -13,7 +13,7 @@
 }
 
 #tile-picker {
-  width: 484px;
+  width: 392px;
   position: absolute;
   top: 20px;
   left: 20px;
@@ -56,4 +56,8 @@
 
 .settings-box-singular-value {
   display: inline-block;
+}
+
+.tile-picker-tabs {
+  margin-bottom: 4px;
 }
